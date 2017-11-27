@@ -12,6 +12,9 @@
                     <router-link to="/register">REGISTER</router-link>
                 </li>
                 <li class="navbar__item" v-if="check">
+                    <router-link to="/books/create">Create BOOK</router-link>
+                </li>
+                <li class="navbar__item" v-if="check">
                     <a @click.stop="logout">LOGOUT</a>
                 </li>
 

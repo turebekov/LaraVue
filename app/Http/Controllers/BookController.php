@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use Illuminate\Http\Request;
+use File;
 
 class BookController extends Controller
 {
@@ -77,7 +78,7 @@ class BookController extends Controller
         $this->validate($request,[
             'name' => 'required|max:255',
             'description' => 'required|max:3000',
-            'image' => 'required|image',
+            'image' => 'image',
             'text' => 'required'
         ]);
         $book = $request->user()->books()
@@ -87,9 +88,9 @@ class BookController extends Controller
         $book->description = $request->description;
         if($request->hasFile('image') && $request->file('image')->isValid()){
             $filename = $this->getFileName($request->image);
-            $request->image->move(base_path('public/image'),$filename);
+            $request->image->move(base_path('public/images'),$filename);
 
-            File::delete(base_path('public/images/'.$book->image));
+             File::delete(base_path('public/images/'.$book->image));
             $book->image=$filename;
         }
         $book->text = $request->text;
@@ -102,13 +103,11 @@ class BookController extends Controller
             ]);
     }
     public function destroy($id, Request $request){
-        $book = $request->user()->books()
+       $book = $request->user()->books()
             ->findOrFail($id);
-
-
+       //$book = Book::find($id);
 
         File::delete(base_path('public/images/'.$book->image));
-
         $book->delete();
 
         return response()

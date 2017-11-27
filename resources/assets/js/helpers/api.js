@@ -1,5 +1,7 @@
 import axios from 'axios'
 import Auth from '../store/auth'
+
+
 export function get(url) {
     return axios({
         method: 'GET',
@@ -15,6 +17,16 @@ export function post(url, payload) {
         method: 'POST',
         url: url,
         data: payload,
+        headers: {
+            'Authorization': `Bearer ${Auth.state.api_token}`
+        }
+    })
+}
+
+export function del(url) {
+    return axios({
+        method: 'DELETE',
+        url: url,
         headers: {
             'Authorization': `Bearer ${Auth.state.api_token}`
         }
